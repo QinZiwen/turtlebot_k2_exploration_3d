@@ -1,0 +1,29 @@
+<launch>
+  <!-- "camera" should uniquely identify the device. All topics are pushed down
+       into the "camera" namespace, and it is prepended to tf frame ids. -->
+   <arg name="publish_tf"  default="true"/>
+   <arg name="camera"      default="kinect2"/>
+   <arg name="resolution"  default="qhd"/>
+   <!-- Laserscan topic -->
+   <arg name="scan_topic"  default="/scan_kinect"/>
+
+  <!-- ################################ -->
+  <include file="$(find turtlebot_exploration_3d)/launch/includes/3dsensor/kinect2.launch.xml">
+    <arg name="camera"                          value="$(arg camera)"/>
+    <arg name="publish_tf"                      value="$(arg publish_tf)"/>
+  </include>
+  <!-- ################################ -->
+
+  <!--                        Laserscan                      -->
+  <!-- Run the depthimage_to_laserscan node -->
+  <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" output="screen">
+    <remap from="image" to="/$(arg camera)/$(arg resolution)/image_depth_rect"/>
+    <remap from="camera_info" to="/$(arg camera)/$(arg resolution)/camera_info" />
+    <remap from="scan" to="$(arg scan_topic)" /> 
+
+    <param name="output_frame_id" value="/kinect2_depth_frame"/>
+    <param name="scan_height" value="30"/>
+    <param name="range_min" value="0.45"/>
+    <param name="range_max" value="8.00"/>
+  </node>
+</launch>

@@ -1,0 +1,50 @@
+TrajectoryPlannerROS:
+
+# Robot Configuration Parameters
+  acc_lim_x: 0.5      #2.5
+  acc_lim_y: 0        #2.5
+  acc_lim_theta: 0.5  #3.2
+  max_vel_x: 0.3      #0.5
+  min_vel_x: 0.1      #0.1
+  max_vel_theta: 0.5  #1.0
+  min_vel_theta: 0.1  #-1.0   !!!
+  min_in_place_vel_theta: 0.2 #0.4;The minimum rotational velocity allowed for the base while performing in-place rotations in radians/sec
+  backup_vel: -0.3    #-0.1;Speed used for backing up during escapes in meters/sec
+  escape_vel: -0.3    #-0.1;Speed used for driving during escapes in meters/sec
+  holonomic_robot: false   #true;Determines whether velocity commands are generated for a holonomic or non-holonomic robot
+                           #if holonomic_robot is set to true
+                           #y_vels (list, default: [-0.3, -0.1, 0.1, 0.3]) 
+                           #The strafing velocities that a holonomic robot will consider in meters/sec 
+
+# Goal Tolerance Parameters
+  yaw_goal_tolerance: 0.3    #0.05
+  xy_goal_tolerance: 0.2     #0.1
+  latch_xy_goal_tolerance: false   #false;If goal tolerance is latched, if the robot ever reaches the goal xy location it will simply rotate in place, even if it ends up outside the goal tolerance while it is doing so
+
+# Forward Simulation Parameters
+  sim_time: 1      #1.0;
+  sim_granularity: 0.025    #0.025;The step size, in meters, to take between points on a given trajectory 
+  angular_sim_granularity: 0.025   #0.025;
+  vx_samples: 3    #3; The number of samples to use when exploring the x velocity space 
+  vtheta_samples: 20     #20
+  controller_frequency: 20   #20; The frequency at which this controller will be called in Hz.
+
+# Trajectory Scoring Parameters
+  meter_scoring: true   #false; Whether the gdist_scale and pdist_scale parameters should assume that goal_distance and path_distance are expressed in units of meters or cells. Cells are assumed by default
+  pdist_scale: 0.6      #0.6; The weighting for how much the controller should stay close to the path it was given 
+  gdist_scale: 0.8      #0.8;The weighting for how much the controller should attempt to reach its local goal, also controls speed
+  occdist_scale: 0.02   #0.01; The weighting for how much the controller should attempt to avoid obstacles
+  heading_lookahead: 0.35   #0.325; How far to look ahead in meters when scoring different in-place-rotation trajectories
+  heading_scoring: true  #false; Whether to score based on the robot's heading to the path or its distance from the path
+  heading_scoring_timestep: 0.8   #0.8; How far to look ahead in time in seconds along the simulated trajectory when using heading scoring 
+  dwa: true             #true; Whether to use the Dynamic Window Approach (DWA)_ or whether to use Trajectory Rollout 
+  publish_cost_grid_pc: false    #false; Whether or not to publish the cost grid that the planner will use when planning
+                               #/publish_cost_grid_pc (bool, default: false)
+                               #Whether or not to publish the cost grid that the planner will use when planning. When true, a sensor_msgs/PointCloud2 will be available on the ~<name>/cost_cloud topic. Each point cloud represents the cost grid and has a field for each individual scoring function component as well as the overall cost for each cell, taking the scoring parameters into account
+  global_frame_id: odom   #odom; The frame to set for the cost_cloud. Should be set to the same frame as the local costmap's global frame
+
+# Oscillation Prevention Parameters
+  oscillation_reset_dist: 0.05    #0.05; How far the robot must travel in meters before oscillation flags are reset 
+
+# Global Plan Parameters
+  prune_plan: true     #true; Defines whether or not to eat up the plan as the robot moves along the path

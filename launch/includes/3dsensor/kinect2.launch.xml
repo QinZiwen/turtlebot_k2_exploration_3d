@@ -1,0 +1,11 @@
+<launch>
+    <!-- "camera" should uniquely identify the device. All topics are pushed down
+           into the "camera" namespace, and it is prepended to tf frame ids. -->
+     <arg name="camera"      default="camera"/>
+     <arg name="publish_tf"  default="false"/>
+              
+     <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch">
+         <arg name="base_name"                          value="$(arg camera)"/>                             
+         <arg name="publish_tf"                      value="$(arg publish_tf)"/>  
+     </include>  
+</launch>         
