@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>turtlebot_exploration_3d</name>
+  <name>turtlebot_k2_exploration_3d</name>
   <version>0.0.1</version>
   <description>Autonomous Exploration package for a Turtulebot equiped with RGBD Sensor(Kinect, Xtion)</description>
 
